@@ -1,0 +1,3 @@
+[submodule "src/git-list"]
+	path = src/git-list
+	url = https://github.com/s-mcdonald/git-list.git

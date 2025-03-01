@@ -17,10 +17,10 @@
 
 
 #
-# Includes dir
+# Includes dir :: ensure all includes are added
 #
-/includes/**/*
-!/includes/README.md
+!/includes/*
+!/includes/**/*
 
 #
 # Vendor files
