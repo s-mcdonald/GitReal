@@ -1,0 +1,60 @@
+#
+# IDE project files
+# Add your IDE here
+#
+/.vscode/
+/.idea/
+/.clion/
+/.project
+/.settings
+
+
+#
+# binary and builds
+#
+/build/**/*
+!/build/README.md
+
+
+#
+# Includes dir
+#
+/includes/**/*
+!/includes/README.md
+
+#
+# Vendor files
+# we do not store vendor files so
+# they are ignored. Refer to 
+# docs on how to include them
+#
+/vendor/**/*
+!/vendor/README.md
+
+#
+# Object files & Precompiled headers
+#
+*.o
+*/**/*.o
+
+*.a
+*/**/*.a
+
+*.so
+*/**/*.so
+
+
+#
+# CMake/Build System
+#
+CMakeCache.txt
+CMakeFiles/
+/CMakeScripts/
+/cmake-build-*/
+
+
+#
+# Miscellaneous files
+#
+.DS_Store          # macOS Finder metadata
+Thumbs.db          # Windows Explorer thumbnail cache
