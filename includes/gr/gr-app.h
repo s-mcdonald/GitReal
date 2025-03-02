@@ -32,11 +32,20 @@
 #pragma once
 
 #include <string>
+#include <vector>
+#include <map>
+
+#include "git-branch_meta.h"
 
 #ifndef GIT_REAL_APP_H 
 #define GIT_REAL_APP_H
 
 namespace GitReal {
+
+    struct AppData {
+        std::string config_file_path = "./config.ini";
+        std::string default_repo_path = "./";
+    };
 
     const u_int8_t SUCCESS_SYSCALL = 0;
 
@@ -55,20 +64,28 @@ namespace GitReal {
 
     // we store data in the config.ini file in the 
     // user path /home/<user>/.gitreal/.config.ini
-    struct Config {
-        std::string root;
-        std::string log;
+    struct GitConfig {
+        std::string root;               // location of git repo
     };
 
     struct Preferences {
         Rgba backgroundColor = Rgba(0.015f, 0.175f, 0.260f, 0.10f);
+        std::string log_path;
+    };
+
+    struct GitState {
+        BranchMeta current_branch;
+        std::vector<BranchMeta> local_branches;
+        std::vector<std::string> remote_branches;
+        std::vector<std::string> remotes;
+        std::map<std::string, bool> fetch_flags;
     };
 
     struct AppContext {
+        GitConfig config;
+        GitState git_state;
         Preferences preferences;
-        Config config;
     };
 }
-
 
 #endif /* GIT_REAL_APP_H */

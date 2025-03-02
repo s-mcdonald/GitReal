@@ -47,6 +47,7 @@
 #ifndef GIT_REAL_BRANCH_META_H 
 #define GIT_REAL_BRANCH_META_H
 
+//  we should move this into our namespace
 struct BranchMeta {
     std::string name = "";
     std::string remote_name = "";
@@ -54,6 +55,12 @@ struct BranchMeta {
     bool has_wip = false;
     bool is_porcelain = true;
     bool is_current = false;
+};
+
+// need to reworkl this and the above BranchMeta
+struct RemoteBranchMeta {
+    std::string name = "";
+    std::string remote_name = "";
 };
 
 namespace GitReal 
