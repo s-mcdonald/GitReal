@@ -1,3 +1,15 @@
 [submodule "src/git-list"]
 	path = src/git-list
 	url = https://github.com/s-mcdonald/git-list.git
+[submodule "vendor/imgui"]
+	path = vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "vendor/inih"]
+	path = vendor/inih
+	url = https://github.com/benhoyt/inih.git
+[submodule "vendor/benhoyt/inih"]
+	path = vendor/benhoyt/inih
+	url = https://github.com/benhoyt/inih.git
+[submodule "vendor/ocornut/imgui"]
+	path = vendor/ocornut/imgui
+	url = https://github.com/ocornut/imgui.git
