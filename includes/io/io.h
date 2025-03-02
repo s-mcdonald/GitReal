@@ -37,8 +37,7 @@
 #include <algorithm>
 
 #include "io.h"
-
- #include "git-branch_meta.h"
+#include "git-branch_meta.h"
 
  #ifndef GIT_REAL_IO_H 
  #define GIT_REAL_IO_H
