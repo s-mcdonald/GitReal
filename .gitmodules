@@ -13,3 +13,9 @@
 [submodule "vendor/ocornut/imgui"]
 	path = vendor/ocornut/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "src/git-real-ui/git-real-ui"]
+	path = src/git-real-ui/git-real-ui
+	url = https://github.com/s-mcdonald/git-real-ui.git
+[submodule "src/git-real-ui"]
+	path = src/git-real-ui
+	url = https://github.com/s-mcdonald/git-real-ui.git
