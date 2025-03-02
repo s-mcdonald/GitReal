@@ -60,10 +60,10 @@ namespace GitReal {
     }
 
 
+    // we dont own the repo or iterator so done delete it
     BranchMetaInspector::~BranchMetaInspector()
     {
-        delete this->repo;
-        delete this->iter;
+        //
     }
 
 
