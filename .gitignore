@@ -24,12 +24,11 @@
 
 #
 # Vendor files
-# we do not store vendor files so
-# they are ignored. Refer to 
-# docs on how to include them
+# All vendir files should be submodules so we 
+# dont need to ignore them anymore
 #
-/vendor/**/*
-!/vendor/README.md
+# /vendor/**/*
+# !/vendor/README.md
 
 #
 # Object files & Precompiled headers
