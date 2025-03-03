@@ -133,7 +133,6 @@ namespace GitReal {
             }
 
             std::cout << "" << std::endl;
-            std::cout << std::endl; 
         }
         reset_color();
         std::cout << std::endl;
