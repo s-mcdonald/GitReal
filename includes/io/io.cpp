@@ -23,13 +23,13 @@ namespace GitReal {
 
     void Console::print_title(const char* title)
     {
-        setColor(GitReal::ConsoleColor::MAGENTA);
+        set_color(GitReal::ConsoleColor::MAGENTA);
         std::cout << " " << std::endl;
         std::cout << " " << std::endl;
         std::cout << " //  " << title << std::endl;
         std::cout << " " << std::endl;            
         std::cout << " " << std::endl;
-        resetColor();
+        reset_color();
     }
 
     void Console::cout(const char* value)
@@ -39,15 +39,14 @@ namespace GitReal {
         
     void Console::print_simple_list(const std::vector<BranchMeta>& branch_meta_v) {
  
-        // // Output each branch under the corresponding remote
         for (const auto& b_meta : branch_meta_v) {
             std::cout << "  ";
 
             if (b_meta.is_current) {
-                setColor(GitReal::ConsoleColor::GREEN);
+                set_color(GitReal::ConsoleColor::GREEN);
             }
             std::cout << b_meta.name;
-            resetColor();
+            reset_color();
             std::cout << "" << std::endl;
         }
 
@@ -61,68 +60,119 @@ namespace GitReal {
      */
     void Console::print_branch_tree(const std::vector<BranchMeta>& branch_meta_v, bool p) {
 
-        std::unordered_map<std::string, std::vector<BranchMeta>> grouped_branches;
+        std::unordered_map<std::string, std::vector<BranchMeta>> remote_branches;
+        std::vector<BranchMeta> local_branches;
 
         for (const auto& b_meta : branch_meta_v) {
             const std::string remote = b_meta.remote_name == "" ? "local": b_meta.remote_name; // fix this
-            grouped_branches[remote].push_back(b_meta);
+            if (remote == "local") {
+                local_branches.push_back(b_meta);
+            } else {
+                remote_branches[remote].push_back(b_meta);
+            }
         }
 
-        for (const auto& remote : grouped_branches) {
-
-            const auto remote_name = remote.first;
+        for (const auto& remote : remote_branches) {
             const auto branch_metas = remote.second;
 
-            setColor(GitReal::ConsoleColor::WHITE);
+            set_color(GitReal::ConsoleColor::WHITE);
 
-            std::cout << " " << remote_name << std::endl;
-            resetColor();
+            std::cout << " " << remote.first << std::endl;
+            reset_color();
 
-
-            // // Output each branch under the corresponding remote
             for (const auto& b_meta : branch_metas) {
                 std::cout << "  ";
 
+                set_color(GitReal::ConsoleColor::GREY);
                 if (b_meta.is_current) {
-                    setColor(GitReal::ConsoleColor::GREEN);
+                    set_color(GitReal::ConsoleColor::GREEN);
                 }
                 if (b_meta.is_porcelain == false) {
-                    setColor(GitReal::ConsoleColor::RED);
+                    set_color(GitReal::ConsoleColor::RED);
                 }
                 std::cout << " " << b_meta.name << " ";
                 
-                if (b_meta.has_wip == false && true == p) {
-                    setColor(GitReal::ConsoleColor::WHITE);
-                    setBgColor(GitReal::ConsoleColor::BLUE);
-                    std::cout << "[w]";
+                if (b_meta.has_wip == true && true == p) {
+                    set_color(GitReal::ConsoleColor::WHITE);
+                    set_bg_color(GitReal::ConsoleColor::BLUE);
+                    std::cout << " W ";
+                    reset_color();
                 }
 
-                resetColor();
-
+                reset_color();
                 std::cout << "" << std::endl;
-
             }
 
             std::cout << std::endl; 
         }
-    }
-    
-    Console& Console::setColor(ConsoleColor color) {
-        std::cout <<  getForegroundColor(color);
+
+        if (local_branches.size() > 0) {
+            set_color(GitReal::ConsoleColor::WHITE);
+            std::cout << " " << "local" << std::endl;
+            reset_color();
+        }
+
+        for (const auto& b_meta : local_branches) {
+            std::cout << "  ";
+
+            set_color(GitReal::ConsoleColor::GREY);
+
+            if (b_meta.is_current) {
+                set_color(GitReal::ConsoleColor::GREEN);
+            }
+            if (b_meta.is_porcelain == false) {
+                set_color(GitReal::ConsoleColor::RED);
+            }
+            std::cout << " " << b_meta.name << " ";
+            
+            if (b_meta.has_wip == true) {
+                set_color(GitReal::ConsoleColor::WHITE);
+                set_bg_color(GitReal::ConsoleColor::BLUE);
+                std::cout << " W ";
+                reset_color();
+            }
+
+            std::cout << "" << std::endl;
+            std::cout << std::endl; 
+        }
+        reset_color();
+        std::cout << std::endl;
+    }  
+
+    Console& Console::operator<<(const BranchMeta& value) {
+        std::cout << "Branch Details ----- " << std::endl;
+        std::cout << "Branch : " << value.name << std::endl;
+        std::cout << "WIP    : " <<(value.has_wip ? "Yes" : "No") << std::endl;
+        std::cout << "Clean  : " <<(value.is_porcelain ? "Yes" : "No") << std::endl;
         return *this;
     }
 
-    Console& Console::setBgColor(ConsoleColor color) {
-        std::cout <<  getBackgroundColor(color);
-        return *this;
-    }
-    
-    Console& Console::resetColor() {
-        std::cout << "\033[0m";  // ANSI reset code
+    Console& Console::operator<<(const std::vector<BranchMeta>& branch_meta_v) {
+        print_branch_tree(branch_meta_v, false);
         return *this;
     }
 
-    std::string Console::getForegroundColor(ConsoleColor color) {
+    Console& Console::operator--() {
+        std::cout << get_foreground_color(ConsoleColor::DEFAULT) << get_background_color(ConsoleColor::DEFAULT);
+        return *this;
+    }
+
+    Console& Console::set_color(ConsoleColor color) {
+        std::cout << get_foreground_color(color);
+        return *this;
+    }
+
+    Console& Console::set_bg_color(ConsoleColor color) {
+        std::cout << get_background_color(color);
+        return *this;
+    }
+    
+    Console& Console::reset_color() {
+        --(*this);
+        return *this;
+    }
+
+    std::string Console::get_foreground_color(ConsoleColor color) {
         switch (color) {
             case ConsoleColor::RED: return "\033[31m";
             case ConsoleColor::GREEN: return "\033[32m";
@@ -131,11 +181,13 @@ namespace GitReal {
             case ConsoleColor::MAGENTA: return "\033[35m";
             case ConsoleColor::CYAN: return "\033[36m";
             case ConsoleColor::WHITE: return "\033[37m";
+            case ConsoleColor::GREY: return "\033[90m";
+            case ConsoleColor::DEFAULT:
             default: return "\033[0m"; // Default to reset
         }
     }
 
-    std::string Console::getBackgroundColor(ConsoleColor color) {
+    std::string Console::get_background_color(ConsoleColor color) {
         switch (color) {
             case ConsoleColor::RED: return "\033[41m";
             case ConsoleColor::GREEN: return "\033[42m";
@@ -144,6 +196,8 @@ namespace GitReal {
             case ConsoleColor::MAGENTA: return "\033[45m";
             case ConsoleColor::CYAN: return "\033[46m";
             case ConsoleColor::WHITE: return "\033[47m";
+            case ConsoleColor::GREY: return "\033[100m";
+            case ConsoleColor::DEFAULT:
             default: return "\033[0m"; // Default to reset
         }
     }

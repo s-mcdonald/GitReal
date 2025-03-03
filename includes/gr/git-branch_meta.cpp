@@ -66,25 +66,11 @@ namespace GitReal {
         //
     }
 
-
     // public:
-    std::vector<BranchMeta> BranchMetaInspector::fetch_all_local_branch_meta() {
-        std::vector<BranchMeta> branches;
-        for (const auto &branch_name : _list_branches(GIT_BRANCH_LOCAL)) {
-            BranchMeta br_data = _load_branch(branch_name);
-            branches.push_back(br_data);
-        }
-        return branches;
-    }
-
     std::vector<BranchMeta> BranchMetaInspector::fetch_all_local_branch_meta(bool with_wip) {
-
-        if (with_wip == false) 
-            return fetch_all_local_branch_meta();
-
         std::vector<BranchMeta> branches;
         for (const auto &branch_name : _list_branches(GIT_BRANCH_LOCAL)) {
-            BranchMeta br_data = _load_branch_with_wip(branch_name);
+            BranchMeta br_data = _load_branch(branch_name, with_wip);
             branches.push_back(br_data);
         }
         return branches;
@@ -98,12 +84,11 @@ namespace GitReal {
             const char* branch_name = nullptr;
 
             if (git_branch_name(&branch_name, head_ref) == 0 ) {
-                branch_meta = _load_branch(branch_name);
+                branch_meta = _load_branch(branch_name, true);
             }
         }
 
         git_reference_free(head_ref);
-        // if not found make that clear and handle exceptions
 
         return branch_meta;
     }
@@ -168,29 +153,15 @@ namespace GitReal {
         
         return "";  
     }
-
-    BranchMeta BranchMetaInspector::_load_branch(std::string branch_name)
-    {
-        BranchMeta br_data;
-        br_data.name = branch_name;
-        br_data.remote_branch_name = _get_branch_remote(this->repo, branch_name);
-        br_data.remote_name = _clean_remote_name(br_data.remote_branch_name.c_str());
-        br_data.is_current = _is_current(&branch_name);
-        br_data.has_wip = false;
-        br_data.is_porcelain = (br_data.is_current) ? _is_porcelain(&branch_name) : true;
-
-        return br_data;
-    }
-
     
-    BranchMeta BranchMetaInspector::_load_branch_with_wip(std::string branch_name)
+    BranchMeta BranchMetaInspector::_load_branch(std::string branch_name, bool with_wip)
     {
         BranchMeta br_data;
         br_data.name = branch_name;
         br_data.remote_branch_name = _get_branch_remote(this->repo, branch_name);
         br_data.remote_name = _clean_remote_name(br_data.remote_branch_name.c_str());
         br_data.is_current = _is_current(&branch_name);
-        br_data.has_wip = _has_wip(&branch_name);
+        br_data.has_wip = (with_wip) ? _has_wip(&branch_name) : false;
         br_data.is_porcelain = (br_data.is_current) ? _is_porcelain(&branch_name) : true;
 
         return br_data;
@@ -265,14 +236,17 @@ namespace GitReal {
 
         const char *commit_message = git_commit_message(latest_commit);
         
-        if (commit_message != nullptr && (std::string(commit_message).find("WIP"))) {
-            has_wip = true;
+        if (commit_message != nullptr)
+        {
+            if (
+                std::string(commit_message).find("WIP") != std::string::npos || 
+                std::string(commit_message).find("wip") != std::string::npos
+            ) has_wip = true;   
         }
 
         git_reference_free(branch_ref);
-        
+        git_commit_free(latest_commit);
 
         return has_wip;   
-    
     }
 }

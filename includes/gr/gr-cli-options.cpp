@@ -26,65 +26,34 @@
  * Author: Sam McDonald
  * Date: 2025-02-22
  * 
- * 
  *****************************************************************************/
 
- #pragma once
+ #include <unordered_map>
+ #include <string>
+ #include <vector>
+ #include <algorithm>
 
-#include <iomanip>
-#include <git2.h>
-#include <unordered_map>
-#include <algorithm>
+ #include "gr-cli-options.h"
 
-#include "io.h"
-#include "git-branch_meta.h"
-
- #ifndef GIT_REAL_IO_H 
- #define GIT_REAL_IO_H
-
- 
  namespace GitReal {
 
-    enum class ConsoleColor {
-        RED,
-        GREEN,
-        YELLOW,
-        BLUE,
-        MAGENTA,
-        CYAN,
-        WHITE,
-        GREY,
-        DEFAULT
-    };
+    InputFlags::InputFlags(int argc, char* argv[]) {
+        for (int i = 1; i < argc; ++i) {
+            std::string arg = argv[i];
 
-    class Console {
-        public:
-            explicit Console();
+            if (arg.length() > 1 && arg[0] == '-' && arg[1] != '-') {
+                arg = arg.substr(1);
+                for (char c : arg) {
+                    m_flags.emplace_back(std::string(1, c));
+                }
+            }
+        }
+    }
 
-            void print_title(const char* title);
-
-            void cout(const char* value);
-
-            void print_simple_list(const std::vector<BranchMeta>& branch_meta_v);
-            
-            void print_branch_tree(const std::vector<BranchMeta>& branch_meta_v, bool p);
-
-            Console& operator<<(const BranchMeta& value);
-
-            Console& operator<<(const std::vector<BranchMeta>& branch_meta_v);
-
-            Console& set_color(ConsoleColor color);
-
-            Console& set_bg_color(ConsoleColor color);
-
-            Console& reset_color();
-
-            Console& operator--();
-
-        private:      
-            std::string get_foreground_color(ConsoleColor color);
-            std::string get_background_color(ConsoleColor color);
-    };
+    bool InputFlags::has_flag(const char* flag) {
+        return std::find(m_flags.begin(), m_flags.end(), flag) != m_flags.end();
+    }
 }
 
-#endif /*  #define GIT_REAL_IO_H */
+
+

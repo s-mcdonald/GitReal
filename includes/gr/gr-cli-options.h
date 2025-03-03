@@ -26,65 +26,31 @@
  * Author: Sam McDonald
  * Date: 2025-02-22
  * 
- * 
  *****************************************************************************/
 
- #pragma once
+#pragma once
 
-#include <iomanip>
-#include <git2.h>
 #include <unordered_map>
-#include <algorithm>
+#include <string>
+#include <vector>
 
-#include "io.h"
-#include "git-branch_meta.h"
+#ifndef GIT_REAL_CLI_OPTIONS_H
+#define GIT_REAL_CLI_OPTIONS_H
 
- #ifndef GIT_REAL_IO_H 
- #define GIT_REAL_IO_H
 
- 
- namespace GitReal {
+namespace GitReal {
 
-    enum class ConsoleColor {
-        RED,
-        GREEN,
-        YELLOW,
-        BLUE,
-        MAGENTA,
-        CYAN,
-        WHITE,
-        GREY,
-        DEFAULT
-    };
+     class InputFlags {
+public:
+        InputFlags(int argc, char* argv[]);
 
-    class Console {
-        public:
-            explicit Console();
+        bool has_flag(const char* flag);
 
-            void print_title(const char* title);
-
-            void cout(const char* value);
-
-            void print_simple_list(const std::vector<BranchMeta>& branch_meta_v);
-            
-            void print_branch_tree(const std::vector<BranchMeta>& branch_meta_v, bool p);
-
-            Console& operator<<(const BranchMeta& value);
-
-            Console& operator<<(const std::vector<BranchMeta>& branch_meta_v);
-
-            Console& set_color(ConsoleColor color);
-
-            Console& set_bg_color(ConsoleColor color);
-
-            Console& reset_color();
-
-            Console& operator--();
-
-        private:      
-            std::string get_foreground_color(ConsoleColor color);
-            std::string get_background_color(ConsoleColor color);
+        bool has_option(const char* option);
+private:
+        std::vector<std::string> m_flags;
     };
 }
 
-#endif /*  #define GIT_REAL_IO_H */
+
+#endif /* GIT_REAL_CLI_OPTIONS_H */

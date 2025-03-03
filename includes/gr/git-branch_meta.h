@@ -57,7 +57,6 @@ struct BranchMeta {
     bool is_current = false;
 };
 
-// need to reworkl this and the above BranchMeta
 struct RemoteBranchMeta {
     std::string name = "";
     std::string remote_name = "";
@@ -76,17 +75,14 @@ public:
 
         ~BranchMetaInspector();
         
-        std::vector<BranchMeta> fetch_all_local_branch_meta();
         std::vector<BranchMeta> fetch_all_local_branch_meta(bool with_wip);
-
         BranchMeta fetch_current_branch_meta();
 
 private:
         std::string _get_branch_remote(git_repository *repo, const std::string &branch_name);
         std::vector<std::string> _list_branches(git_branch_t branch_flags); 
         std::string _clean_remote_name(const char *remote_ref);
-        BranchMeta _load_branch(std::string branch_name);
-        BranchMeta _load_branch_with_wip(std::string branch_name);
+        BranchMeta _load_branch(std::string branch_name, bool with_wip);
 
         bool _is_porcelain(std::string* branch_name);
         bool _is_current(std::string* branch_name);
