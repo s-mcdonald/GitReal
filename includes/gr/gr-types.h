@@ -68,13 +68,7 @@ namespace GitReal::Analyze {
         bool is_head = false;
         bool is_worktree_branch = false;
     } BranchInfo;
-
-    struct TrackedBranches {
-        std::string remote;
-        std::vector<BranchInfo> branches;
-    };
     
-    // good to go
     struct RepositoryInfo {
         std::string path;
         std::unordered_map<std::string, std::vector<BranchInfo>> remote_branches;
@@ -82,13 +76,11 @@ namespace GitReal::Analyze {
         std::vector<std::string> remotes;
     };
 
-    // Checked :: We have these
     struct WorkTreeAssociation {
         std::string branch_name;
         std::string path;
     };
 
-    // Checked :: We have these
     typedef std::vector<WorkTreeAssociation> WorkTreeListNew;
 }
 
