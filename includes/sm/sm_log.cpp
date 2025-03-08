@@ -40,7 +40,7 @@
  
 namespace SamMcDonald {
 
-    LogLevel Log::current_level = LogLevel::INFO;
+    LogLevel Log::current_level = LogLevel::LINFO;
 
     void Log::set_log_level(LogLevel level) {
         current_level = level;
@@ -54,15 +54,25 @@ namespace SamMcDonald {
         if (level <= current_level) {
             std::cout << "[ ";
             switch (level) {
-                case LogLevel::CRITICAL: std::cout << "\033[41m\033[97m" << std::setw(8) << std::left << "CRITICAL\033[0m"; break; 
-                case LogLevel::ERROR: std::cout << "\033[91m" << std::setw(8) << std::left << "ERROR"; break;
-                case LogLevel::WARNING: std::cout << "\033[97m" << std::setw(8) << std::left << "WARNING"; break; 
-                case LogLevel::INFO: std::cout << "\033[34m" << std::setw(8) << std::left << "INFO"; break; 
+                case LogLevel::LCRITICAL: std::cout << "\033[41m\033[97m" << std::setw(8) << std::left << "CRITICAL\033[0m"; break; 
+                case LogLevel::LERROR: std::cout << "\033[91m" << std::setw(8) << std::left << "ERROR"; break;
+                case LogLevel::LWARNING: std::cout << "\033[97m" << std::setw(8) << std::left << "WARNING"; break; 
+                case LogLevel::LINFO: std::cout << "\033[34m" << std::setw(8) << std::left << "INFO"; break; 
                 default: std::cout << "\033[90m" << std::setw(8) << std::left << "DEBUG"; break;
             }
             std::cout << "\033[0m";
             std::cout << " ] ";
             std::cout << std::setw(20) << std::left << message << std::endl;
         }
+
+        std::cout << "\033[0m" << std::endl;
+    }
+
+    void Log::err(LogLevel level, const std::string& message) {
+#ifdef DEBUG
+        log(level, message);
+#else
+        std::cerr << message;
+#endif        
     }
 }

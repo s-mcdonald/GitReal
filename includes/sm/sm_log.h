@@ -40,11 +40,11 @@
 namespace SamMcDonald {
 
     enum class LogLevel {
-        CRITICAL = 0,
-        ERROR,
-        WARNING,
-        INFO,
-        DEBUG,
+        LCRITICAL = 0,
+        LERROR,
+        LWARNING,
+        LINFO,
+        LDEBUG,
     };
     
     class Log {
@@ -57,6 +57,8 @@ public:
         static LogLevel get_log_level();
 
         static void log(LogLevel level, const std::string& message);
+
+        static void err(LogLevel level, const std::string& message);
            
 private:
         static LogLevel current_level;
