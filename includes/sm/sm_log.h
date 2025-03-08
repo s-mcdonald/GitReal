@@ -31,16 +31,36 @@
 
 #pragma once
 
+#include <string>
 
 #ifndef SM_LOG_H 
 #define SM_LOG_H
 
-class Log {
-    public:
+ 
+namespace SamMcDonald {
 
+    enum class LogLevel {
+        CRITICAL = 0,
+        ERROR,
+        WARNING,
+        INFO,
+        DEBUG,
+    };
+    
+    class Log {
+public:
+        Log() = delete;
 
-    private:
+        ~Log() = delete;
 
-};
+        static void set_log_level(LogLevel level);
+        static LogLevel get_log_level();
+
+        static void log(LogLevel level, const std::string& message);
+           
+private:
+        static LogLevel current_level;
+    };
+}
 
 #endif /*  #define SM_LOG_H */

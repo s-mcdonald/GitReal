@@ -31,8 +31,38 @@
 
 #pragma once
 
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip> 
 
-#ifndef SM_LOG_H 
-#define SM_LOG_H
+#include "sm_log.h"
+ 
+namespace SamMcDonald {
 
-#endif /*  #define SM_LOG_H */
+    LogLevel Log::current_level = LogLevel::INFO;
+
+    void Log::set_log_level(LogLevel level) {
+        current_level = level;
+    }
+
+    LogLevel Log::get_log_level() {
+        return current_level;
+    }
+
+    void Log::log(LogLevel level, const std::string& message) {
+        if (level <= current_level) {
+            std::cout << "[ ";
+            switch (level) {
+                case LogLevel::CRITICAL: std::cout << "\033[41m\033[97m" << std::setw(8) << std::left << "CRITICAL\033[0m"; break; 
+                case LogLevel::ERROR: std::cout << "\033[91m" << std::setw(8) << std::left << "ERROR"; break;
+                case LogLevel::WARNING: std::cout << "\033[97m" << std::setw(8) << std::left << "WARNING"; break; 
+                case LogLevel::INFO: std::cout << "\033[34m" << std::setw(8) << std::left << "INFO"; break; 
+                default: std::cout << "\033[90m" << std::setw(8) << std::left << "DEBUG"; break;
+            }
+            std::cout << "\033[0m";
+            std::cout << " ] ";
+            std::cout << std::setw(20) << std::left << message << std::endl;
+        }
+    }
+}
