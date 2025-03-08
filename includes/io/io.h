@@ -37,7 +37,7 @@
 #include <algorithm>
 
 #include "io.h"
-#include "git-branch_meta.h"
+#include "gr-types.h"
 
  #ifndef GIT_REAL_IO_H 
  #define GIT_REAL_IO_H
@@ -46,44 +46,48 @@
  namespace GitReal {
 
     enum class ConsoleColor {
-        RED,
+        RED = 0,
         GREEN,
         YELLOW,
         BLUE,
         MAGENTA,
         CYAN,
         WHITE,
+        DULL_WHITE,
+        BRIGHT_WHITE,
         GREY,
         DEFAULT
     };
-
+    
     class Console {
         public:
             explicit Console();
 
-            void print_title(const char* title);
+            ~Console();
 
-            void cout(const char* value);
+            void print_repo_info(const GitReal::Analyze::RepositoryInfo& repo_info, const InputOptions options);
 
-            void print_simple_list(const std::vector<BranchMeta>& branch_meta_v);
-            
-            void print_branch_tree(const std::vector<BranchMeta>& branch_meta_v, bool p);
+            void print_repo_info_tree(const GitReal::Analyze::RepositoryInfo& repo_info, const InputOptions options);
 
-            Console& operator<<(const BranchMeta& value);
+            void print_repo_info_simple(const GitReal::Analyze::RepositoryInfo& repo_info, const InputOptions options);
 
-            Console& operator<<(const std::vector<BranchMeta>& branch_meta_v);
+            constexpr Console& operator<<(const GitReal::Analyze::BranchInfo& b_info);
 
-            Console& set_color(ConsoleColor color);
+            constexpr Console& set_fg(ConsoleColor color);
 
-            Console& set_bg_color(ConsoleColor color);
+            constexpr Console& set_bg(ConsoleColor color);
 
-            Console& reset_color();
+            constexpr Console& set_bg_color(ConsoleColor color);
 
-            Console& operator--();
+            constexpr Console& reset_color();
 
-        private:      
-            std::string get_foreground_color(ConsoleColor color);
-            std::string get_background_color(ConsoleColor color);
+            constexpr Console& operator--();
+
+        private:
+            void print_branch(const GitReal::Analyze::BranchInfo& b_info);
+            void print_branch(const GitReal::Analyze::BranchInfo& b_info, InputOptions options);
+            constexpr std::string get_foreground_color(ConsoleColor color);
+            constexpr std::string get_background_color(ConsoleColor color);
     };
 }
 

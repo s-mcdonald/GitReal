@@ -26,32 +26,13 @@
  * Author: Sam McDonald
  * Date: 2025-02-22
  * 
+ * 
  *****************************************************************************/
 
- #include <unordered_map>
- #include <string>
- #include <vector>
- #include <string_view>
- #include <algorithm>
+#pragma once
 
- #include "gr-cli-options.h"
 
- namespace GitReal {
+#ifndef SM_LOG_H 
+#define SM_LOG_H
 
-    InputFlags::InputFlags(int argc, char* argv[]) {
-        for (int i = 1; i < argc; ++i) {
-            std::string arg = argv[i];
-
-            if (arg.length() > 1 && arg[0] == '-' && arg[1] != '-') {
-                arg = arg.substr(1);
-                for (char c : arg) {
-                    m_flags.emplace_back(std::string(1, c));
-                }
-            }
-        }
-    }
-
-    bool InputFlags::has_flag(const char* flag) {
-        return std::find(m_flags.begin(), m_flags.end(), flag) != m_flags.end();
-    }
-}
+#endif /*  #define SM_LOG_H */

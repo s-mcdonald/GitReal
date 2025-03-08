@@ -35,8 +35,6 @@
 #include <vector>
 #include <map>
 
-#include "git-branch_meta.h"
-
 #ifndef GIT_REAL_APP_H 
 #define GIT_REAL_APP_H
 
