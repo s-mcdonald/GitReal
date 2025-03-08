@@ -94,7 +94,6 @@ namespace GitReal::Analyze {
 
         const auto worktree_names = get_worktree_names(repo);
     
-        // Iterate over worktree names and gather details
         for (auto wt_name : worktree_names)
         {
             git_worktree* worktree = nullptr;
@@ -160,7 +159,6 @@ namespace GitReal::Analyze {
                 continue;
             }
 
-            // well we have a branch ref now
             BranchInfo branch_info = create_branch_info(repo, branch_ref, branch_name);
 
             branch_infos.push_back(std::move(branch_info));

@@ -52,6 +52,8 @@ namespace GitReal {
             print_branch(b_info, options);
         }
 
+        reset_color();
+
         std::cout << std::endl;
     }
 
@@ -67,6 +69,8 @@ namespace GitReal {
                 print_branch(b_info, options);
             }
         }
+
+        reset_color();
     }
 
     constexpr Console& Console::operator<<(const GitReal::Analyze::BranchInfo& b_info) {
