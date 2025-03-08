@@ -41,8 +41,8 @@
 #include <utility> 
 #include <filesystem>
 
-#include "gr-types.h"
-#include "git-repo-state.h"
+#include "gr_types.h"
+#include "gr_repo_state.h"
 
 namespace GitReal::Analyze {
 

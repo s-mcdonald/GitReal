@@ -32,7 +32,7 @@
 #include <iostream>
 #include <git2.h>
 
-#include "gr-config.h"
+#include "gr_config.h"
 
 using namespace std;
 

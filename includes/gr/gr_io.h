@@ -36,8 +36,8 @@
 #include <unordered_map>
 #include <algorithm>
 
-#include "io.h"
-#include "gr-types.h"
+#include "gr_io.h"
+#include "gr_types.h"
 
  #ifndef GIT_REAL_IO_H 
  #define GIT_REAL_IO_H

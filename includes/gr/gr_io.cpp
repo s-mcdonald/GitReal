@@ -7,8 +7,8 @@
 #include <algorithm>
 #include <git2.h>
 
-#include "io.h"
-#include "gr-types.h"
+#include "gr_io.h"
+#include "gr_types.h"
 
 namespace GitReal {
 

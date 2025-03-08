@@ -22,33 +22,23 @@
  * SOFTWARE.
  * 
  * -----------------------------------------------------------------------------
- * Class Name: GitLibController
  * 
  * Author: Sam McDonald
  * Date: 2025-02-22
  * 
- * Description:
- * 
- * This class provides access to the git repository meta data about a 
- * branch or branches using the below public members.
- * 
- *      ###  std::vector<BranchMeta> fetch_all_local_branch_meta();
- *
- *      ###  BranchMeta fetch_current_branch_meta();
- * 
  *****************************************************************************/
 
+#pragma once
 
-#include <iostream>
-#include <git2.h>
-#include <algorithm>
-#include <unordered_map>
-#include <sstream>
+#include <gr_app.h>
 
-#include "gr-lib.h"
+#ifndef GIT_REAL_UI_H 
+#define GIT_REAL_UI_H
 
-using namespace std;
+namespace GitReal::Ui {
 
-namespace GitReal {
-
+    void update_clear_color(Rgba rgba);
 }
+
+
+#endif /* GIT_REAL_UI_H */

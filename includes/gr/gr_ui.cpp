@@ -30,8 +30,8 @@
 
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-#include <gr-app.h>
-#include <gr-ui.h>
+#include <gr_app.h>
+#include <gr_ui.h>
 
 namespace GitReal::Ui {
 

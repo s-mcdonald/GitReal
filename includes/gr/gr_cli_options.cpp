@@ -28,17 +28,30 @@
  * 
  *****************************************************************************/
 
-#pragma once
+ #include <unordered_map>
+ #include <string>
+ #include <vector>
+ #include <string_view>
+ #include <algorithm>
 
-#include <gr-app.h>
+ #include "gr_cli_options.h"
 
-#ifndef GIT_REAL_UI_H 
-#define GIT_REAL_UI_H
+ namespace GitReal {
 
-namespace GitReal::Ui {
+    InputFlags::InputFlags(int argc, char* argv[]) {
+        for (int i = 1; i < argc; ++i) {
+            std::string arg = argv[i];
 
-    void update_clear_color(Rgba rgba);
+            if (arg.length() > 1 && arg[0] == '-' && arg[1] != '-') {
+                arg = arg.substr(1);
+                for (char c : arg) {
+                    m_flags.emplace_back(std::string(1, c));
+                }
+            }
+        }
+    }
+
+    bool InputFlags::has_flag(const char* flag) {
+        return std::find(m_flags.begin(), m_flags.end(), flag) != m_flags.end();
+    }
 }
-
-
-#endif /* GIT_REAL_UI_H */

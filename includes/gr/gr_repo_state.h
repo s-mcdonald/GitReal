@@ -25,33 +25,47 @@
  * 
  * Author: Sam McDonald
  * Date: 2025-02-22
- * 
+ *
  *****************************************************************************/
 
- #include <unordered_map>
- #include <string>
- #include <vector>
- #include <string_view>
- #include <algorithm>
+#pragma once
 
- #include "gr-cli-options.h"
+#include <string>
+#include <vector>
+#include <git2.h>
+#include "gr_types.h"
 
- namespace GitReal {
+#ifndef GIT_REAL_REPO_STATE_H 
+#define GIT_REAL_REPO_STATE_H
 
-    InputFlags::InputFlags(int argc, char* argv[]) {
-        for (int i = 1; i < argc; ++i) {
-            std::string arg = argv[i];
+namespace GitReal::Analyze
+{
+    RepositoryInfo get_repository_info(git_repository* repo, git_branch_iterator* iter);
 
-            if (arg.length() > 1 && arg[0] == '-' && arg[1] != '-') {
-                arg = arg.substr(1);
-                for (char c : arg) {
-                    m_flags.emplace_back(std::string(1, c));
-                }
-            }
-        }
-    }
+    WorkTreeMap list_worktrees_new(git_repository* repo);
 
-    bool InputFlags::has_flag(const char* flag) {
-        return std::find(m_flags.begin(), m_flags.end(), flag) != m_flags.end();
-    }
+    std::vector<BranchInfo> get_local_branch_info_list(git_repository* repo, git_branch_iterator* iter, WorkTreeMap wt_map);
+
+    std::vector<std::string> get_worktree_names(git_repository* repo);
+
+    bool git_branch_has_wip(git_reference *branch_ref);
+
+    bool git_is_porcelain(git_repository* repo);
+
+    inline bool git_is_active(git_repository* repo, git_reference *branch_ref);
+
+    inline BranchInfo create_branch_info(git_repository* repo, git_reference* branch_ref, const char* branch_name);
+
+    std::string gr_git_branch_remote_name(git_reference *branch_ref);
+
+    std::string gr_git_branch_remote_branch_name(git_reference *branch_ref);
+
+    inline std::vector<std::string> git_strarray_to_vector(const git_strarray& strarray);
+
+    std::string gr_clean_remote_name(std::string& ref_str);
+
+    std::vector<std::string> gr_git_remotes_fetch_new_list(git_repository* repo);
 }
+
+
+#endif /* GIT_REAL_REPO_STATE_H */

@@ -22,50 +22,33 @@
  * SOFTWARE.
  * 
  * -----------------------------------------------------------------------------
+ * Class Name: GitLibController
  * 
  * Author: Sam McDonald
  * Date: 2025-02-22
+ * 
+ * Description:
+ * 
+ * This class provides access to the git repository meta data about a 
+ * branch or branches using the below public members.
+ * 
+ *      ###  std::vector<BranchMeta> fetch_all_local_branch_meta();
  *
+ *      ###  BranchMeta fetch_current_branch_meta();
+ * 
  *****************************************************************************/
 
-#pragma once
 
-#include <string>
-#include <vector>
+#include <iostream>
 #include <git2.h>
-#include "gr-types.h"
+#include <algorithm>
+#include <unordered_map>
+#include <sstream>
 
-#ifndef GIT_REAL_REPO_STATE_H 
-#define GIT_REAL_REPO_STATE_H
+#include "gr_lib.h"
 
-namespace GitReal::Analyze
-{
-    RepositoryInfo get_repository_info(git_repository* repo, git_branch_iterator* iter);
+using namespace std;
 
-    WorkTreeMap list_worktrees_new(git_repository* repo);
+namespace GitReal {
 
-    std::vector<BranchInfo> get_local_branch_info_list(git_repository* repo, git_branch_iterator* iter, WorkTreeMap wt_map);
-
-    std::vector<std::string> get_worktree_names(git_repository* repo);
-
-    bool git_branch_has_wip(git_reference *branch_ref);
-
-    bool git_is_porcelain(git_repository* repo);
-
-    inline bool git_is_active(git_repository* repo, git_reference *branch_ref);
-
-    inline BranchInfo create_branch_info(git_repository* repo, git_reference* branch_ref, const char* branch_name);
-
-    std::string gr_git_branch_remote_name(git_reference *branch_ref);
-
-    std::string gr_git_branch_remote_branch_name(git_reference *branch_ref);
-
-    inline std::vector<std::string> git_strarray_to_vector(const git_strarray& strarray);
-
-    std::string gr_clean_remote_name(std::string& ref_str);
-
-    std::vector<std::string> gr_git_remotes_fetch_new_list(git_repository* repo);
 }
-
-
-#endif /* GIT_REAL_REPO_STATE_H */
